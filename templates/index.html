@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gráfico de Barras - Atores/Atrizes com Mais Prêmios</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <!-- Contêiner para o gráfico de Atores/Atrizes -->
+    <div class="atores-container">
+        <canvas id="atoresChart" width="300" height="200"></canvas>
+    </div>
+    <div class="filmes-container">
+        <canvas id="filmesChart" width="300" height="200"></canvas>
+    </div>
+    <div class="filmes-arrecadacao-container">
+        <canvas id="filmesArrecadacaoChart" width="300" height="200"></canvas>
+    </div>
+
+    <script>
+        // Função para buscar dados de atores
+        async function obterDadosAtores() {
+            const resposta = await fetch('http://localhost:8080/atores');
+            const dados = await resposta.json();
+            return dados;
+        }
+
+        // Função para buscar dados de filmes
+        async function obterDadosFilmes() {
+            const resposta = await fetch('http://localhost:8080/filmes');
+            const dados = await resposta.json();
+            return dados;
+        }
+
+        // Função para buscar dados de arrecadacao de filmes
+        async function obterDadosFilmesArrecadacao() {
+            const resposta = await fetch('http://localhost:8080/filmes/arrecadacao');
+            const dados = await resposta.json();
+            return dados;
+        }
+
+        // Função para criar o gráfico de Atores/Atrizes
+        async function criarGraficoAtores() {
+            const dadosAtores = await obterDadosAtores();
+
+            var ctx = document.getElementById('atoresChart').getContext('2d');
+            var myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: dadosAtores.map(item => item.nome),
+                    datasets: [{
+                        label: 'Quantidade de Prêmios',
+                        data: dadosAtores.map(item => item.premios),
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1,
+                        barThickness: 20
+                    }]
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            stepSize: 1
+                        }
+                    },
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Atores/Atrizes com Mais Prêmios',
+                            font: {
+                                size: 16
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        async function criarGraficoFilmes() {
+            const dadosAtores = await obterDadosFilmes();
+
+            var ctx = document.getElementById('filmesChart').getContext('2d');
+            var myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: dadosAtores.map(item => item.nome),
+                    datasets: [{
+                        label: 'Quantidade de Prêmios',
+                        data: dadosAtores.map(item => item.premios),
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1,
+                        barThickness: 20
+                    }]
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            stepSize: 1
+                        }
+                    },
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Filmes com Mais Prêmios',
+                            font: {
+                                size: 16
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        async function criarGraficoFilmesArrecadacao() {
+            const dadosAtores = await obterDadosFilmesArrecadacao();
+
+            var ctx = document.getElementById('filmesArrecadacaoChart').getContext('2d');
+            var myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: dadosAtores.map(item => item.nome),
+                    datasets: [{
+                        label: 'Quantidade Arrecadada',
+                        data: dadosAtores.map(item => item.premios),
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1,
+                        barThickness: 20
+                    }]
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            stepSize: 1
+                        }
+                    },
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Filmes com Maior Arrecadação',
+                            font: {
+                                size: 16
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Chama as funções para criação dos gráficos
+        criarGraficoAtores();
+        criarGraficoFilmes();
+        criarGraficoFilmesArrecadacao();
+
+    </script>
+</body>
+</html>
